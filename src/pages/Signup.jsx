@@ -61,7 +61,7 @@ function Signup() {
                 src={visibilityIcon}
                 alt="show pasword"
                 className="showPassword"
-                onClick={(prevState) => !prevState}
+                onClick={() => setShowPassword((prevState) => !prevState)}
               />
             </div>
             <Link to="/forgot-password" className="forgotPasswordLink">
