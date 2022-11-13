@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   getAuth,
@@ -54,7 +55,7 @@ function Signup() {
 
       navigate('/');
     } catch (error) {
-      console.log(error);
+      console.log('Something went wrong, please try again');
     }
   };
 
