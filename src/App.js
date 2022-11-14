@@ -7,6 +7,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Explore from './pages/Explore';
 import ForgotPassword from './pages/ForgotPassword';
 import Offers from './pages/Offers';
+import Category from './pages/Category';
 import Profile from './pages/Profile';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Explore />}></Route>
           <Route path="/offers" element={<Offers />}></Route>
+          <Route path="/category/:categoryName" element={<Category />}></Route>
           {/* nested route to make an element accessible to logged in users ONLY:*/}
           <Route path="/profile" element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />}></Route>
