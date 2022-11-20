@@ -5,7 +5,7 @@ import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
 
 function CreateListing() {
-  const [geolocationEnabled, setGeolocationEnabled] = useState(true);
+  const [geolocationEnabled, setGeolocationEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     type: 'rent',
@@ -81,16 +81,29 @@ function CreateListing() {
 
     if (geolocationEnabled) {
       const response = await fetch(
-        `http://api.positionstack.com/v1/forward?access_key=key&query=${address}`
+        `http://api.positionstack.com/v1/forward?access_key=f34f01d4fbd09eb849d583cf8db5e63a&query=${address}`
       );
 
       const data = await response.json();
 
-      console.log(data);
+      geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
+      geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
+      location =
+        data.status === 'ZERO_RESULTS'
+          ? undefined
+          : data.results[0]?.formatted_address;
+
+      if (location === undefined || location.includes('undefined')) {
+        setLoading(false);
+        toast.error('Please enter a correct address');
+        return;
+      }
+      // console.log(data);
     } else {
       geolocation.lat = latitude;
       geolocation.lng = longitude;
       location = address;
+      console.log(geolocation, location);
     }
 
     setLoading(false);
