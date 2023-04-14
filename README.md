@@ -1,3 +1,7 @@
+# House Marketplace Project
+
+A mobile-first app that allows users to view existing property listings as well as list property for rent/sale and edit their listings. Uses Firebase for database, authentication and file storage.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
