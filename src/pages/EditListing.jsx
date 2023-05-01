@@ -14,7 +14,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 
 function EditListing() {
-  const [geolocationEnabled, setGeolocationEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [listing, setListing] = useState(false);
   const [formData, setFormData] = useState({
@@ -112,36 +111,12 @@ function EditListing() {
       return;
     }
 
-    let geolocation = {};
+    const geolocation = {
+      lat: latitude,
+      lng: longitude,
+    };
 
-    let location;
-
-    if (geolocationEnabled) {
-      const response = await fetch(
-        `http://api.positionstack.com/v1/forward?access_key=${process.env.REACT_APP_GEOCODE_API_KEY}&query=${address}`
-      );
-
-      const data = await response.json();
-
-      geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
-      geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
-      location =
-        data.status === 'ZERO_RESULTS'
-          ? undefined
-          : data.results[0]?.formatted_address;
-
-      if (location === undefined || location.includes('undefined')) {
-        setLoading(false);
-        toast.error('Please enter a correct address');
-        return;
-      }
-      // console.log(data);
-    } else {
-      geolocation.lat = latitude;
-      geolocation.lng = longitude;
-      location = address;
-      console.log(geolocation, location);
-    }
+    const location = address;
 
     // Store images in the firebase
     const storeImage = async (image) => {
@@ -159,14 +134,7 @@ function EditListing() {
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + progress + '% done');
-            switch (snapshot.state) {
-              case 'paused':
-                console.log('Upload is paused');
-                break;
-              case 'running':
-                console.log('Upload is running');
-                break;
-            }
+            console.log('upload is ' + snapshot.state);
           },
           (error) => {
             // Handle unsuccessful uploads
@@ -214,15 +182,12 @@ function EditListing() {
   };
 
   const onMutate = (e) => {
-    let boolean = null;
-
-    if (e.target.value === true) {
-      boolean = true;
-    }
-
-    if (e.target.value === false) {
-      boolean = false;
-    }
+    const boolean =
+      e.target.value === 'true'
+        ? true
+        : e.target.value === 'false'
+        ? false
+        : null;
 
     //files
     if (e.target.files) {
@@ -376,33 +341,30 @@ function EditListing() {
             onChange={onMutate}
             required
           />
-
-          {!geolocationEnabled && (
-            <div className="formLatLng flex">
-              <div>
-                <label className="formLabel">Latitude</label>
-                <input
-                  className="formInputSmall"
-                  type="number"
-                  id="latitude"
-                  value={latitude}
-                  onChange={onMutate}
-                  required
-                />
-              </div>
-              <div>
-                <label className="formLabel">Longitude</label>
-                <input
-                  className="formInputSmall"
-                  type="number"
-                  id="longitude"
-                  value={longitude}
-                  onChange={onMutate}
-                  required
-                />
-              </div>
+          <div className="formLatLng flex">
+            <div>
+              <label className="formLabel">Latitude</label>
+              <input
+                className="formInputSmall"
+                type="number"
+                id="latitude"
+                value={latitude}
+                onChange={onMutate}
+                required
+              />
             </div>
-          )}
+            <div>
+              <label className="formLabel">Longitude</label>
+              <input
+                className="formInputSmall"
+                type="number"
+                id="longitude"
+                value={longitude}
+                onChange={onMutate}
+                required
+              />
+            </div>
+          </div>
 
           <label className="formLabel">Offer</label>
           <div className="formButtons">
