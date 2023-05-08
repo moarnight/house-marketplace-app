@@ -64,7 +64,8 @@ function CreateListing() {
     return () => {
       isMounted.current = false;
     };
-  }, [isMounted]);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth, navigate, isMounted]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -94,6 +95,7 @@ function CreateListing() {
     const storeImage = async (image) => {
       return new Promise((resolve, reject) => {
         const storage = getStorage();
+
         const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`;
 
         const storageRef = ref(storage, 'images/' + fileName);
@@ -394,7 +396,8 @@ function CreateListing() {
 
           <label className="formLabel">Images</label>
           <p className="imagesInfo">
-            The first image will be the cover (max 6).
+            The first image will be the cover (max 6). Please ensure that the
+            image size is under 2MB.
           </p>
           <input
             className="formInputFile"

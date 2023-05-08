@@ -92,7 +92,8 @@ function EditListing() {
     return () => {
       isMounted.current = false;
     };
-  }, [isMounted]);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth, navigate, isMounted]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -423,7 +424,8 @@ function EditListing() {
 
           <label className="formLabel">Images</label>
           <p className="imagesInfo">
-            The first image will be the cover (max 6).
+            The first image will be the cover (max 6). Please ensure that the
+            image size is under 2MB.
           </p>
           <input
             className="formInputFile"
